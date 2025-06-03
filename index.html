@@ -345,7 +345,7 @@
             <p class="mb-3">&copy; <span id="current-year"></span> All Rights Reserved. Handmade with <i class="fas fa-heart text-pink-500"></i>.</p>
             <p class="mb-4">
                 For more stories and behind-the-scenes, visit my blog:
-                <a href="https://mackenziemancinisblog.com" target="_blank" rel="noopener noreferrer" class="text-pink-600 hover:text-pink-700 font-semibold underline">
+                <a href="https://mackenziemancinisblog.blogspot.com" target="_blank" rel="noopener noreferrer" class="text-pink-600 hover:text-pink-700 font-semibold underline">
                     mackenziemancinisblog.com
                 </a>
             </p>
@@ -395,15 +395,16 @@
         const yourEmailAddress = "mackenzie@mackenziescraftycorner.com"; // Your email address
 
         const products = [
-            { id: 1, name: "Hand-Painted Mug", price: 25.99, image: "https://placehold.co/300x300/E1C4B8/6F4E37?text=Crafty+Mug", description: "Beautifully hand-painted ceramic mug." },
-            { id: 2, name: "Knitted Rainbow Scarf", price: 35.50, image: "https://placehold.co/300x300/D2B48C/8B4513?text=Knitted+Scarf&font=lobster", description: "Warm and cozy hand-knitted scarf." },
-            { id: 3, name: "Custom Pet Keychain", price: 45.00, image: "https://placehold.co/300x300/A0D2DB/4A5568?text=Pet+Keychain&font=lobster", description: "Custom portrait of your pet on a keychain." },
-            { id: 4, name: "Sparkling Beaded Earrings", price: 18.00, image: "https://placehold.co/300x300/F5D0C9/C71585?text=Beaded+Earrings&font=lobster", description: "Elegant handcrafted beaded earrings." }
+            { id: 1, name: "Graphic T-Shirt", price: 20.00, image: "https://placehold.co/300x300/D2B48C/8B4513?text=Graphic+T-Shirt&font=lobster", description: "Custom graphic on a t-shirt." },
+            { id: 2, name: "Embroidered T-Shirt", price: 25.00, image: "https://placehold.co/300x300/D2B48C/8B4513?text=Embroidered+T-Shirt&font=lobster", description: "Warm and cozy hand-knitted scarf." },
+            { id: 3, name: "Graphic Long Sleeve Shirt", price: 25.00, image: "https://placehold.co/300x300/A0D2DB/4A5568?text=Graphic+Long+Sleeve+Shirt&font=lobster", description: "Custom portrait of your pet on a keychain." },
+            { id: 4, name: "Embroidered Long Sleeve Shirt", price: 30.00, image: "https://placehold.co/300x300/F5D0C9/C71585?text=Embroidered+Long+Sleeve+Shirt&font=lobster", description: "Elegant handcrafted beaded earrings." }
         ];
 
         const catalogueItemsData = [ // Renamed to avoid conflict
-            { id: 101, name: "Quilted Comfort Blankets", category: "Textiles", image: "https://placehold.co/300x300/E6E6FA/483D8B?text=Quilt&font=lobster", description: "Custom-designed quilted blankets." },
-            { id: 102, name: "Whimsical Clay Sculptures", category: "Pottery", image: "https://placehold.co/300x300/FFDAB9/A0522D?text=Clay+Art&font=lobster", description: "Unique, hand-sculpted clay creations." },
+            { id: 101, name: "T-Shirts", category: "Clothing", image: "https://placehold.co/300x300/E6E6FA/483D8B?text=T-Shirts&font=lobster", description: "Custom t-shirts with your design on them. Can be embroidered on or a graphic." },
+            { id: 102, name: "Long Sleeve Shirts", category: "Clothing", image: "https://placehold.co/300x300/FFDAB9/A0522D?text=Long+Sleeve+Shirts&font=lobster", description: "Custom long sleeve shirts with your design on them. Can be embroidered on or a graphic." },
+            { id: 103, name: "Sweatshirts", category: "Clothing", image: "https://placehold.co/300x300/E6E6FA/483D8B?text=Sweatshirts&font=lobster", description: "Custom sweatshirts with your design on them. Can be embroidered on or a graphic." }
             // ... more catalogue items
         ];
 
@@ -598,7 +599,7 @@
             const totalAmount = calculateCartTotal().toFixed(2);
 
             const subject = "New Order - Mackenzie's Crafty Corner";
-            const body = `A new order has been (simulated) placed!\n
+            const body = `A new order has been placed!\n
 --- Shipping Details ---
 Name: ${fullName}
 Address: ${address}
