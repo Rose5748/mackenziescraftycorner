@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mackenzie’s Crafty Corner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .lobster-font {
+            font-family: 'Lobster', cursive;
+        }
+
+        .animated-gradient-bg {
+            background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 25%, #fdd5b4 50%, #c1f0d2 75%, #fbc2eb 100%);
+            background-size: 600% 600%;
+            animation: gradientAnimation 25s ease infinite;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.6s ease-in-out;
+            min-height: calc(100vh - 200px);
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn-crafty {
+            @apply bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105;
+        }
+        .btn-crafty-secondary {
+            @apply bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105;
+        }
+        .btn-crafty-outline {
+            @apply bg-transparent hover:bg-pink-100 text-pink-600 font-semibold py-2 px-4 border border-pink-500 hover:border-transparent rounded-lg shadow-sm transition-all duration-300;
+        }
+
+
+        .product-card {
+            @apply bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-2xl hover:scale-105;
+        }
+        .product-card img {
+            @apply w-full h-56 object-cover;
+        }
+
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            padding: 1rem; /* Padding for smaller screens */
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 1.5rem; /* Adjusted padding */
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 500px; /* Slightly wider for forms */
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+            max-height: 90vh; /* Max height for scroll */
+            overflow-y: auto; /* Enable scroll if content overflows */
+        }
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+        .modal-close-btn { /* General close button for modals */
+            @apply absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl;
+        }
+        .modal-action-btn { /* For main action buttons in modals */
+             @apply mt-4 bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 px-4 rounded-lg w-full;
+        }
+        .modal-secondary-action-btn {
+             @apply mt-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-lg w-full;
+        }
+
+
+        .floating-shapes-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: -1;
+        }
+        .shape { position: absolute; border-radius: 50%; opacity: 0.15; }
+        .shape1 { width: 150px; height: 150px; background: #FFD1DC; top: 10%; left: 5%; animation: float 20s infinite ease-in-out; }
+        .shape2 { width: 100px; height: 100px; background: #B0E0E6; top: 60%; left: 80%; animation: float 25s infinite ease-in-out reverse; }
+        .shape3 { width: 80px; height: 80px; background: #FFFACD; top: 30%; left: 70%; animation: float 18s infinite ease-in-out; }
+        .shape4 { width: 120px; height: 120px; background: #D8BFD8; top: 75%; left: 15%; animation: float 22s infinite ease-in-out reverse; }
+
+        @keyframes float {
+            0% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+            25% { transform: translateY(-20px) translateX(15px) rotate(45deg); }
+            50% { transform: translateY(10px) translateX(-10px) rotate(90deg); }
+            75% { transform: translateY(-15px) translateX(20px) rotate(135deg); }
+            100% { transform: translateY(0px) translateX(0px) rotate(180deg); }
+        }
+    </style>
+</head>
+<body class="text-gray-800 inter-font animated-gradient-bg">
+
+    <div class="floating-shapes-container">
+        <div class="shape shape1"></div>
+        <div class="shape shape2"></div>
+        <div class="shape shape3"></div>
+        <div class="shape shape4"></div>
+    </div>
+
+    <header class="bg-white/80 backdrop-blur-md shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex flex-wrap justify-between items-center">
+            <a href="#" onclick="showPage('home-page'); return false;" class="lobster-font text-3xl text-pink-600 hover:text-pink-700 transition-colors">
+                Mackenzie’s Crafty Corner
+            </a>
+            <nav class="mt-4 md:mt-0">
+                <ul class="flex space-x-3 md:space-x-5 items-center">
+                    <li><a href="#" onclick="showPage('home-page'); return false;" class="text-purple-600 hover:text-pink-500 font-semibold transition-colors">Home</a></li>
+                    <li><a href="#" onclick="showPage('catalogue-page'); return false;" class="text-purple-600 hover:text-pink-500 font-semibold transition-colors">Catalogue & Requests</a></li>
+                    <li><a href="#" onclick="showPage('about-page'); return false;" class="text-purple-600 hover:text-pink-500 font-semibold transition-colors">About</a></li>
+                    <li><a href="#" onclick="showPage('help-support-page'); return false;" class="text-purple-600 hover:text-pink-500 font-semibold transition-colors">Help & Support</a></li>
+                    <li>
+                        <a href="#" onclick="showPage('cart-page'); return false;" class="text-purple-600 hover:text-pink-500 font-semibold transition-colors relative">
+                            <i class="fas fa-shopping-cart"></i> Cart
+                            <span id="cart-count" class="absolute -top-2 -right-3 bg-pink-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-8">
+        <div id="home-page" class="page active">
+            <section class="text-center py-12 md:py-20 bg-white/70 backdrop-blur-sm rounded-xl shadow-xl p-8">
+                <h1 class="lobster-font text-5xl md:text-7xl text-pink-600 mb-6">Welcome to My Crafty Corner!</h1>
+                <p class="text-xl text-purple-700 mb-8 max-w-2xl mx-auto">Discover unique, handmade treasures crafted with love and a sprinkle of magic.</p>
+                <button onclick="showPage('catalogue-page')" class="btn-crafty text-lg px-8 py-3">Explore My Creations</button>
+            </section>
+
+            <section class="py-16">
+                <h2 class="lobster-font text-4xl text-purple-700 text-center mb-12">Featured Goodies</h2>
+                <div id="featured-products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    </div>
+            </section>
+        </div>
+
+        <div id="catalogue-page" class="page">
+             <section class="py-12 bg-white/70 backdrop-blur-sm rounded-xl shadow-xl p-8">
+                <h2 class="lobster-font text-4xl text-pink-600 text-center mb-10">My Crafting Catalogue</h2>
+                <p class="text-purple-700 text-center mb-10 max-w-xl mx-auto">Here's a glimpse of what I love to make. See something you like or have a question? Let me know! If you have a special request, use the form below.</p>
+                <div id="catalogue-items" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                    </div>
+
+                <h3 class="lobster-font text-3xl text-pink-600 text-center mb-8">Got a Custom Idea?</h3>
+                <form id="request-form" class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+                    <div class="mb-5">
+                        <label for="request-name" class="block mb-2 text-sm font-medium text-purple-700">Your Name</label>
+                        <input type="text" id="request-name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5" placeholder="Jane Doe" required>
+                    </div>
+                    <div class="mb-5">
+                        <label for="request-email" class="block mb-2 text-sm font-medium text-purple-700">Your Email</label>
+                        <input type="email" id="request-email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5" placeholder="you@example.com" required>
+                    </div>
+                    <div class="mb-5">
+                        <label for="request-description" class="block mb-2 text-sm font-medium text-purple-700">Describe Your Dream Craft</label>
+                        <textarea id="request-description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5" placeholder="I'm dreaming of a..." required></textarea>
+                    </div>
+                    <div class="mb-6">
+                        <label for="request-image" class="block mb-2 text-sm font-medium text-purple-700">Reference Image (Optional)</label>
+                        <input type="file" id="request-image" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-pink-500 focus:border-pink-500 p-2">
+                        <p class="mt-1 text-xs text-gray-500">PNG, JPG, GIF up to 10MB (dummy upload)</p>
+                    </div>
+                    <button type="submit" class="btn-crafty w-full">Send My Request</button>
+                    <p class="mt-3 text-xs text-center text-gray-500">This will open your email client with the request details pre-filled, addressed to mackenzieroseink@gmail.com.</p>
+                </form>
+            </section>
+        </div>
+
+        <div id="about-page" class="page">
+             <section class="py-12 bg-white/70 backdrop-blur-sm rounded-xl shadow-xl p-8 md:p-12">
+                <h2 class="lobster-font text-4xl text-pink-600 text-center mb-8">About Mackenzie & Her Crafts</h2>
+                <div class="max-w-2xl mx-auto text-purple-700 space-y-6">
+                    <img src="https://placehold.co/400x400/FADADD/DB7093?text=Mackenzie" alt="Mackenzie - The Crafter" class="mx-auto rounded-full shadow-lg w-48 h-48 object-cover mb-6">
+                    <p class="text-lg leading-relaxed">Hello there! I'm Mackenzie, the heart and hands behind Mackenzie’s Crafty Corner...</p>
+                    <p class="leading-relaxed">This little corner of the internet is where I share my passion projects with you...</p>
+                    <p class="text-lg font-semibold text-center mt-8">Want to see more of my creative journey and everyday musings?</p>
+                    <p class="text-center">
+                        <a href="https://mackenziemancinisblog.com" target="_blank" rel="noopener noreferrer" class="btn-crafty-secondary inline-block">
+                            Visit My Blog: mackenziemancinisblog.com <i class="fas fa-external-link-alt ml-2"></i>
+                        </a>
+                    </p>
+                </div>
+            </section>
+        </div>
+
+        <div id="help-support-page" class="page">
+            <section class="py-12 bg-white/70 backdrop-blur-sm rounded-xl shadow-xl p-8">
+                <h2 class="lobster-font text-4xl text-pink-600 text-center mb-10">Help & Support</h2>
+                <p class="text-purple-700 text-center mb-10 max-w-xl mx-auto">Have a question, a suggestion, or want to leave a review? I'd love to hear from you! Fill out the form below.</p>
+                
+                <form id="help-review-form" class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+                    <div class="mb-5">
+                        <label for="hr-name" class="block mb-2 text-sm font-medium text-purple-700">Your Name</label>
+                        <input type="text" id="hr-name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5" placeholder="Your Name" required>
+                    </div>
+                    <div class="mb-5">
+                        <label for="hr-email" class="block mb-2 text-sm font-medium text-purple-700">Your Email</label>
+                        <input type="email" id="hr-email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5" placeholder="you@example.com" required>
+                    </div>
+                    <div class="mb-5">
+                        <label for="hr-type" class="block mb-2 text-sm font-medium text-purple-700">Type of Submission</label>
+                        <select id="hr-type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5">
+                            <option value="Review">Leave a Review</option>
+                            <option value="Help Request">Need Help / Ask a Question</option>
+                            <option value="Suggestion">Make a Suggestion</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-5">
+                        <label for="hr-message" class="block mb-2 text-sm font-medium text-purple-700">Your Message</label>
+                        <textarea id="hr-message" rows="5" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full p-2.5" placeholder="Tell me more..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-crafty w-full">Send Message</button>
+                    <p class="mt-3 text-xs text-center text-gray-500">This will open your email client with the details pre-filled, addressed to mackenzieroseink@gmail.com.</p>
+                </form>
+            </section>
+        </div>
+
+        <div id="cart-page" class="page">
+            <section class="py-12 bg-white/70 backdrop-blur-sm rounded-xl shadow-xl p-8">
+                <h2 class="lobster-font text-4xl text-pink-600 text-center mb-10">Your Crafty Haul</h2>
+                <div id="cart-items-container" class="mb-8">
+                    </div>
+                <div id="cart-empty-message" class="text-center text-purple-700 py-10" style="display: none;">
+                    <i class="fas fa-shopping-basket fa-3x mb-4 text-pink-400"></i>
+                    <p class="text-xl">Your cart is currently empty.</p>
+                </div>
+                <div id="cart-summary" class="text-right" style="display: none;">
+                    <p class="text-2xl font-semibold text-purple-700 mb-6">Total: <span id="cart-total" class="text-pink-600">$0.00</span></p>
+                    <button onclick="showPage('checkout-page')" class="btn-crafty text-lg px-8 py-3">Proceed to Checkout</button>
+                </div>
+            </section>
+        </div>
+
+        <div id="checkout-page" class="page">
+            <section class="py-12 bg-white/70 backdrop-blur-sm rounded-xl shadow-xl p-8">
+                <h2 class="lobster-font text-4xl text-pink-600 text-center mb-10">Checkout Your Treasures</h2>
+                <div class="max-w-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-2xl lobster-font text-purple-700 mb-6">Shipping Details</h3>
+                        <form id="shipping-form">
+                            <div class="mb-4">
+                                <label for="fullName" class="block text-sm font-medium text-gray-700">Full Name</label>
+                                <input type="text" id="fullName" name="fullName" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
+                                <input type="text" id="address" name="address" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="city" class="block text-sm font-medium text-gray-700">City</label>
+                                <input type="text" id="city" name="city" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" required>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label for="state" class="block text-sm font-medium text-gray-700">State</label>
+                                    <input type="text" id="state" name="state" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" required>
+                                </div>
+                                <div>
+                                    <label for="zip" class="block text-sm font-medium text-gray-700">Zip Code</label>
+                                    <input type="text" id="zip" name="zip" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2" required>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-2xl lobster-font text-purple-700 mb-6">Payment (Dummy Form)</h3>
+                        <form id="payment-form">
+                            <div class="mb-4">
+                                <label for="cardNumber" class="block text-sm font-medium text-gray-700">Card Number</label>
+                                <input type="text" id="cardNumber" placeholder="•••• •••• •••• ••••" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label for="expiryDate" class="block text-sm font-medium text-gray-700">Expiry Date</label>
+                                    <input type="text" id="expiryDate" placeholder="MM/YY" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                                </div>
+                                <div>
+                                    <label for="cvv" class="block text-sm font-medium text-gray-700">CVV</label>
+                                    <input type="text" id="cvv" placeholder="•••" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                                </div>
+                            </div>
+                             <div class="mt-8 text-center">
+                                <p class="text-sm text-gray-600 mb-2">Note: Payments will be processed when the order ships.</p>
+                                <p class="text-lg font-semibold text-purple-700 mb-2">Order Total: <span id="checkout-total" class="text-pink-600">$0.00</span></p>
+                                <button type="submit" class="btn-crafty w-full text-lg py-3">Place Order (Simulated)</button>
+                                <p class="mt-3 text-xs text-center text-gray-500">This will open your email client with order details pre-filled, addressed to mackenzieroseink@gmail.com.</p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="bg-purple-200/70 backdrop-blur-sm text-purple-800 py-10 mt-16">
+        <div class="container mx-auto px-6 text-center">
+            <p class="lobster-font text-2xl mb-3">Mackenzie’s Crafty Corner</p>
+            <p class="mb-3">&copy; <span id="current-year"></span> All Rights Reserved. Handmade with <i class="fas fa-heart text-pink-500"></i>.</p>
+            <p class="mb-4">
+                For more stories and behind-the-scenes, visit my blog:
+                <a href="https://mackenziemancinisblog.com" target="_blank" rel="noopener noreferrer" class="text-pink-600 hover:text-pink-700 font-semibold underline">
+                    mackenziemancinisblog.com
+                </a>
+            </p>
+            <div class="flex justify-center space-x-4">
+                <a href="#" class="text-purple-700 hover:text-pink-500"><i class="fab fa-instagram fa-lg"></i></a>
+                <a href="#" class="text-purple-700 hover:text-pink-500"><i class="fab fa-pinterest fa-lg"></i></a>
+                <a href="#" class="text-purple-700 hover:text-pink-500"><i class="fab fa-facebook fa-lg"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="message-modal" class="modal-overlay">
+        <div class="modal-content text-center">
+            <button class="modal-close-btn" onclick="closeModal('message-modal')">&times;</button>
+            <p id="message-modal-text" class="text-lg text-purple-700 my-6"></p>
+            <button onclick="closeModal('message-modal')" class="modal-action-btn">Okay</button>
+        </div>
+    </div>
+
+    <div id="item-question-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close-btn" onclick="closeModal('item-question-modal')">&times;</button>
+            <h3 class="lobster-font text-2xl text-pink-600 mb-6 text-center">Ask a Question About <span id="question-item-name" class="font-semibold">Item</span></h3>
+            <form id="item-question-form">
+                <input type="hidden" id="question-item-id">
+                <div class="mb-4">
+                    <label for="question-user-name" class="block text-sm font-medium text-purple-700">Your Name</label>
+                    <input type="text" id="question-user-name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2.5" required>
+                </div>
+                <div class="mb-4">
+                    <label for="question-user-email" class="block text-sm font-medium text-purple-700">Your Email</label>
+                    <input type="email" id="question-user-email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2.5" required>
+                </div>
+                <div class="mb-4">
+                    <label for="question-text" class="block text-sm font-medium text-purple-700">Your Question</label>
+                    <textarea id="question-text" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2.5" required></textarea>
+                </div>
+                <button type="submit" class="modal-action-btn">Send Question</button>
+                 <p class="mt-3 text-xs text-center text-gray-500">This will open your email client with the question pre-filled, addressed to mackenzieroseink@gmail.com.</p>
+            </form>
+        </div>
+    </div>
+
+
+    <script>
+        // --- Global Variables & Data ---
+        const yourEmailAddress = "mackenzieroseink@gmail.com"; // Your email address
+
+        const products = [
+            { id: 1, name: "Hand-Painted Mug", price: 25.99, image: "https://placehold.co/300x300/E1C4B8/6F4E37?text=Crafty+Mug", description: "Beautifully hand-painted ceramic mug." },
+            { id: 2, name: "Knitted Rainbow Scarf", price: 35.50, image: "https://placehold.co/300x300/D2B48C/8B4513?text=Knitted+Scarf&font=lobster", description: "Warm and cozy hand-knitted scarf." },
+            { id: 3, name: "Custom Pet Keychain", price: 45.00, image: "https://placehold.co/300x300/A0D2DB/4A5568?text=Pet+Keychain&font=lobster", description: "Custom portrait of your pet on a keychain." },
+            { id: 4, name: "Sparkling Beaded Earrings", price: 18.00, image: "https://placehold.co/300x300/F5D0C9/C71585?text=Beaded+Earrings&font=lobster", description: "Elegant handcrafted beaded earrings." }
+        ];
+
+        const catalogueItemsData = [ // Renamed to avoid conflict
+            { id: 101, name: "Quilted Comfort Blankets", category: "Textiles", image: "https://placehold.co/300x300/E6E6FA/483D8B?text=Quilt&font=lobster", description: "Custom-designed quilted blankets." },
+            { id: 102, name: "Whimsical Clay Sculptures", category: "Pottery", image: "https://placehold.co/300x300/FFDAB9/A0522D?text=Clay+Art&font=lobster", description: "Unique, hand-sculpted clay creations." },
+            // ... more catalogue items
+        ];
+
+        let cart = JSON.parse(localStorage.getItem('craftyCornerCart')) || [];
+
+        // --- Page Navigation ---
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) targetPage.classList.add('active');
+            else document.getElementById('home-page').classList.add('active');
+            window.scrollTo(0,0);
+            if (pageId === 'cart-page') renderCartPage();
+            if (pageId === 'checkout-page') updateCheckoutTotal();
+        }
+
+        // --- Modal Functionality ---
+        function showModal(modalId, message = null) {
+            if (modalId === 'message-modal' && message) {
+                document.getElementById('message-modal-text').textContent = message;
+            }
+            const modal = document.getElementById(modalId);
+            if (modal) modal.classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) modal.classList.remove('active');
+        }
+        // Close modals if overlay is clicked
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (event) => {
+                if (event.target === overlay) {
+                    closeModal(overlay.id);
+                }
+            });
+        });
+
+
+        // --- Product & Catalogue Rendering ---
+        function renderProducts(containerId, productArray) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = productArray.map(product => `
+                <div class="product-card">
+                    <img src="${product.image}" alt="${product.name}" onerror="this.onerror=null;this.src='https://placehold.co/300x300/cccccc/969696?text=Image+Not+Found';">
+                    <div class="p-6">
+                        <h3 class="text-2xl lobster-font text-pink-600 mb-2">${product.name}</h3>
+                        <p class="text-purple-700 mb-3 text-sm">${product.description}</p>
+                        ${product.price ? `<p class="text-xl font-semibold text-teal-600 mb-4">$${product.price.toFixed(2)}</p>` : ''}
+                        <div class="space-y-2">
+                            ${product.price ? `<button onclick="addToCart(${product.id})" class="btn-crafty w-full">Add to Cart</button>` : `<button onclick="showPage('catalogue-page'); document.getElementById('request-description').value = 'Inquiry about ${product.name} - ${product.description}';" class="btn-crafty-secondary w-full">Inquire About This Style</button>`}
+                            <button onclick="openItemQuestionModal(${product.id}, '${product.name.replace(/'/g, "\\'")}')" class="btn-crafty-outline w-full">Ask a Question</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // --- Item Question Modal ---
+        function openItemQuestionModal(itemId, itemName) {
+            document.getElementById('question-item-id').value = itemId;
+            document.getElementById('question-item-name').textContent = itemName;
+            document.getElementById('item-question-form').reset();
+            showModal('item-question-modal');
+        }
+
+        document.getElementById('item-question-form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const itemName = document.getElementById('question-item-name').textContent;
+            const userName = document.getElementById('question-user-name').value;
+            const userEmail = document.getElementById('question-user-email').value;
+            const question = document.getElementById('question-text').value;
+
+            const subject = `Question about ${itemName} - Mackenzie's Crafty Corner`;
+            const body = `Item: ${itemName}\nFrom: ${userName} (${userEmail})\n\nQuestion:\n${question}\n\n---\nThis message was generated from Mackenzie's Crafty Corner website.`;
+            
+            const mailtoLink = `mailto:${yourEmailAddress}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailtoLink;
+
+            closeModal('item-question-modal');
+            showModal('message-modal', `Your question about ${itemName} is ready to be sent via your email app to ${yourEmailAddress}!`);
+        });
+
+
+        // --- Cart Functionality ---
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                const cartItem = cart.find(item => item.id === productId);
+                if (cartItem) cartItem.quantity++;
+                else cart.push({ ...product, quantity: 1 });
+                updateCart();
+                showModal('message-modal', `${product.name} added to your crafty haul!`);
+            }
+        }
+        function removeFromCart(productId) { 
+            cart = cart.filter(item => item.id !== productId);
+            updateCart();
+            renderCartPage();
+        }
+        function updateQuantityInCart(productId, change) { 
+            const cartItem = cart.find(item => item.id === productId);
+            if (cartItem) {
+                cartItem.quantity += change;
+                if (cartItem.quantity <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    updateCart();
+                    renderCartPage(); 
+                }
+            }
+        } 
+        function calculateCartTotal() { return cart.reduce((total, item) => total + (item.price * item.quantity), 0); }
+        function updateCart() {
+            localStorage.setItem('craftyCornerCart', JSON.stringify(cart));
+            updateCartCount();
+            if (document.getElementById('cart-page').classList.contains('active')) renderCartPage();
+            if (document.getElementById('checkout-page').classList.contains('active')) updateCheckoutTotal();
+        }
+        function updateCartCount() {
+            const cartCountEl = document.getElementById('cart-count');
+            if (cartCountEl) {
+                cartCountEl.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+            }
+        } 
+        function renderCartPage() { 
+            const container = document.getElementById('cart-items-container');
+            const summaryEl = document.getElementById('cart-summary');
+            const emptyMsgEl = document.getElementById('cart-empty-message');
+            const totalEl = document.getElementById('cart-total');
+
+            if (!container || !summaryEl || !emptyMsgEl || !totalEl) return;
+
+            if (cart.length === 0) {
+                container.innerHTML = '';
+                summaryEl.style.display = 'none';
+                emptyMsgEl.style.display = 'block';
+            } else {
+                emptyMsgEl.style.display = 'none';
+                summaryEl.style.display = 'block';
+                container.innerHTML = cart.map(item => `
+                    <div class="flex flex-wrap items-center justify-between bg-white p-3 md:p-4 rounded-lg shadow mb-4">
+                        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 md:w-20 md:h-20 object-cover rounded-md mr-3 md:mr-4" onerror="this.onerror=null;this.src='https://placehold.co/80x80/cccccc/969696?text=Img';">
+                        <div class="flex-grow mb-2 sm:mb-0">
+                            <h4 class="text-md md:text-lg font-semibold text-purple-700">${item.name}</h4>
+                            <p class="text-xs md:text-sm text-gray-600">$${item.price.toFixed(2)} each</p>
+                        </div>
+                        <div class="flex items-center my-2 sm:my-0 mx-auto sm:mx-2">
+                            <button onclick="updateQuantityInCart(${item.id}, -1)" class="px-2 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm md:text-base">-</button>
+                            <span class="px-3 text-purple-700 text-sm md:text-base">${item.quantity}</span>
+                            <button onclick="updateQuantityInCart(${item.id}, 1)" class="px-2 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm md:text-base">+</button>
+                        </div>
+                        <p class="text-md md:text-lg font-semibold text-pink-600 w-20 md:w-24 text-right ml-auto sm:ml-2 mr-2 sm:mr-0">$${(item.price * item.quantity).toFixed(2)}</p>
+                        <button onclick="removeFromCart(${item.id})" class="text-red-500 hover:text-red-700"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                `).join('');
+                totalEl.textContent = `$${calculateCartTotal().toFixed(2)}`;
+            }
+        }
+
+
+        // --- Checkout Page ---
+        function updateCheckoutTotal() {
+            const checkoutTotalEl = document.getElementById('checkout-total');
+            if (checkoutTotalEl) checkoutTotalEl.textContent = `$${calculateCartTotal().toFixed(2)}`;
+        }
+
+        document.getElementById('payment-form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (cart.length === 0) {
+                showModal('message-modal', "Your cart is empty! Add some crafts before checking out.");
+                return;
+            }
+            const shippingForm = document.getElementById('shipping-form');
+            if (shippingForm && !shippingForm.checkValidity()) {
+                showModal('message-modal', "Please fill out all required shipping details.");
+                shippingForm.reportValidity();
+                return;
+            }
+
+            const fullName = document.getElementById('fullName').value;
+            const address = document.getElementById('address').value;
+            const city = document.getElementById('city').value;
+            const state = document.getElementById('state').value;
+            const zip = document.getElementById('zip').value;
+
+            let orderItemsBody = "--- Order Items ---\n";
+            cart.forEach(item => {
+                orderItemsBody += `${item.name} x ${item.quantity} - $${(item.price * item.quantity).toFixed(2)}\n`;
+            });
+            const totalAmount = calculateCartTotal().toFixed(2);
+
+            const subject = "New Order - Mackenzie's Crafty Corner";
+            const body = `A new order has been (simulated) placed!\n
+--- Shipping Details ---
+Name: ${fullName}
+Address: ${address}
+City: ${city}
+State: ${state}
+Zip: ${zip}
+
+${orderItemsBody}
+--- Total ---
+Total: $${totalAmount}
+
+Note: Payments will be processed when the order ships.
+---
+This message was generated from Mackenzie's Crafty Corner website.`;
+            
+            const mailtoLink = `mailto:${yourEmailAddress}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailtoLink;
+
+            showModal('message-modal', `Your order details are ready to be sent via your email app to ${yourEmailAddress}! Thank you!`);
+            cart = [];
+            updateCart();
+            // Do not navigate away immediately, let user send email.
+            // showPage('home-page'); 
+        });
+        
+        // --- Custom Request Form (Catalogue Page) ---
+        document.getElementById('request-form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('request-name').value;
+            const email = document.getElementById('request-email').value;
+            const description = document.getElementById('request-description').value;
+
+            const subject = "Custom Craft Request - Mackenzie's Crafty Corner";
+            const body = `Custom Craft Request:\n
+From: ${name} (${email})
+Description:
+${description}
+\n---\nThis message was generated from Mackenzie's Crafty Corner website.`;
+
+            const mailtoLink = `mailto:${yourEmailAddress}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailtoLink;
+            
+            showModal('message-modal', `Thank you, ${name}! Your custom request is ready to be sent via your email app to ${yourEmailAddress}.`);
+            this.reset();
+        });
+
+        // --- Help & Support Form ---
+        document.getElementById('help-review-form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('hr-name').value;
+            const email = document.getElementById('hr-email').value;
+            const type = document.getElementById('hr-type').value;
+            const message = document.getElementById('hr-message').value;
+
+            const subject = `${type} Submission - Mackenzie's Crafty Corner`;
+            const body = `New Submission:\n
+Type: ${type}
+From: ${name} (${email})
+Message:
+${message}
+\n---\nThis message was generated from Mackenzie's Crafty Corner website.`;
+
+            const mailtoLink = `mailto:${yourEmailAddress}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailtoLink;
+
+            showModal('message-modal', `Thank you, ${name}! Your ${type.toLowerCase()} is ready to be sent via your email app to ${yourEmailAddress}.`);
+            this.reset();
+        });
+
+
+        // --- Footer Year ---
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // --- Initial Setup ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts('featured-products', products);
+            renderProducts('catalogue-items', catalogueItemsData); // Use the renamed data array
+            updateCartCount();
+            showPage('home-page');
+            // Close any modals that might be active on page load (e.g., browser back button)
+            document.querySelectorAll('.modal-overlay.active').forEach(m => closeModal(m.id));
+        });
+    </script>
+</body>
+</html>
